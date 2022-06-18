@@ -1,4 +1,5 @@
 // import MainnetNetworkSpecifics from './mainnet'
+import GoerliNetworkSpecifics from './goerli'
 import RinkebyNetworkSpecifics from './rinkeby'
 
 export type ExternalAddresses = {
@@ -42,6 +43,7 @@ export type INetworkSpecifics = {
 const specifics: INetworkSpecifics[] = [
   // new MainnetNetworkSpecifics(),
   new RinkebyNetworkSpecifics(),
+  new GoerliNetworkSpecifics(),
 ]
 
 export function getNetworkSpecifics(): INetworkSpecifics[] {

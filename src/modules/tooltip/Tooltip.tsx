@@ -26,8 +26,8 @@ export default function Tooltip({
   tooltipContentclassName?: string
   customBottomPad?: number
 }) {
-  const ref = useRef(null)
-  const contentRef = useRef(null)
+  const ref = useRef(null) as any
+  const contentRef = useRef(null) as any
   const [hiderTimerId, setHideTimerId] = useState(null)
 
   const [toolTipProperties, setToolTipProperties] = useState({
@@ -76,12 +76,14 @@ export default function Tooltip({
 
     setShowToolTip(true)
   }
+
   const onMouseLeave = useCallback(() => {
     const hideTimeoutId = setTimeout(() => {
       setShowToolTip(false)
     }, HIDING_DELAY_TIME)
     setHideTimerId(hideTimeoutId)
   }, [])
+
   return (
     <div
       className={classNames('inline-block', className)}

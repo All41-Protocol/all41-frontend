@@ -58,7 +58,7 @@ export default function TradeCompleteModal({
   return (
     <Modal className="bg-transparent" close={close}>
       <div
-        className="relative w-full md:w-120 px-2.5 py-5 flex flex-col justify-center items-center"
+        className="relative w-full md:w-[25rem] px-2.5 py-5 flex flex-col justify-center items-center"
         style={{
           backgroundImage: `url("${bgImageURL}"), linear-gradient(180deg, #011032 0%, #02194D 100%)`,
           backgroundSize: 'cover',

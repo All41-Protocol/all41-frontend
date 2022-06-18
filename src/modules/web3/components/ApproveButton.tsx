@@ -9,6 +9,8 @@ import { web3UintMax, zeroBN } from '../utils/Web3Utils'
 import useTokenAllowance from '../hooks/useTokenAllowance'
 import approveToken from 'actions/web3/approveToken'
 import { TX_TYPES } from './TradeCompleteModal'
+import ApproveOptions from './ApproveOptions'
+import { CogIcon } from '@heroicons/react/outline'
 
 export default function ApproveButton({
   tokenAddress,
@@ -36,7 +38,7 @@ export default function ApproveButton({
     tokenAddress,
     spenderAddress,
     requiredAllowance
-  )
+  ) as any
 
   // isMissingAllowance says whether the user has enough allowance on the ERC20 token to perform the trade. If isMissingAllowance == true then the user needs to do an approve tx first
   const isMissingAllowance =
@@ -81,10 +83,10 @@ export default function ApproveButton({
   return (
     <div
       className={classNames(
-        'flex justify-center items-center py-4 px-4 text-lg font-bold rounded-2xl w-full font-sf-compact-medium text-center dark:border-gray-500',
+        'flex justify-center items-center py-4 px-4 text-lg font-bold rounded-2xl w-full text-center',
         disable
-          ? 'text-brand-gray-2 dark:text-gray-300 bg-brand-gray dark:bg-gray-500 cursor-default border-brand-gray'
-          : 'border-brand-blue text-white bg-brand-blue font-medium hover:bg-blue-800 cursor-pointer'
+          ? 'text-gray-300 bg-gray-500 cursor-default'
+          : 'text-white bg-blue-600 hover:bg-blue-800 cursor-pointer'
       )}
       onClick={() => {
         !disable && approve()
@@ -101,6 +103,7 @@ export default function ApproveButton({
           permanently enable {tokenName} {tooltipAction} from this wallet.
         </div>
       </Tooltip>
+
     </div>
   )
 }

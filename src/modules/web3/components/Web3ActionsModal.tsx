@@ -13,6 +13,9 @@ import TradeCompleteModal, { TX_TYPES } from "./TradeCompleteModal"
 import ModalService from "modules/modals/ModalService"
 import { GlobalContext } from "stores/GlobalContext"
 import deposit from "actions/web3/deposit"
+import Tooltip from "modules/tooltip/Tooltip"
+import { CogIcon } from "@heroicons/react/outline"
+import ApproveOptions from "./ApproveOptions"
 
 export default function Web3ActionsModal({
   close,
@@ -90,8 +93,10 @@ export default function Web3ActionsModal({
     true
   ) as any
 
+  const isDaiAmountValid = inputDaiAmount && parseFloat(inputDaiAmount) > 0 && inputDaiAmount?.length > 0
+
   const exceedsBalance =
-    isTokenBalanceLoading || !inputDaiAmount
+    isTokenBalanceLoading
       ? false
       : parseFloat(tokenBalance as string) < parseFloat(inputDaiAmount)
 
@@ -99,14 +104,38 @@ export default function Web3ActionsModal({
     txManager.isPending ||
     exceedsBalance ||
     !isMissingAllowance ||
-    !isValidAddress
+    !isValidAddress ||
+    !isDaiAmountValid
 
-  const isDepositDisabled = !isValidAddress || inputDaiAmount?.length <= 0
+  const isDepositDisabled =
+    txManager.isPending ||
+    exceedsBalance ||
+    isMissingAllowance ||
+    !isValidAddress ||
+    !isDaiAmountValid 
 
   return (
     <Modal close={close}>
       <div className="w-full md:w-[34rem] px-6 py-6 bg-white dark:bg-gray-700 rounded-xl text-white">
-        <div className="text-2xl font-bold mb-4">Deposit</div>
+        <div className="mb-4 flex justify-between items-center">
+          <div className="text-2xl font-bold">Deposit</div>
+
+          <Tooltip
+            className="w-4 h-4 ml-2 cursor-pointer text-white"
+            IconComponent={CogIcon}
+          >
+            <div className="w-64">
+              <ApproveOptions
+                disabled={txManager.isPending}
+                setIsUnlockOnceChecked={setIsUnlockOnceChecked}
+                isUnlockOnceChecked={isUnlockOnceChecked}
+                isUnlockPermanentChecked={isUnlockPermanentChecked}
+                setIsUnlockPermanentChecked={setIsUnlockPermanentChecked}
+                unlockText={'for All41 transactions'}
+              />
+            </div>
+          </Tooltip>
+        </div>
 
         <div className="mb-4">
           <div className="mb-2">Enter ETH address to send DAI too</div>
@@ -117,7 +146,7 @@ export default function Web3ActionsModal({
           />
         </div>
 
-        <div>
+        <div className="mb-8">
           <div className="mb-2">Enter amount of DAI to send</div>
           <input
             onChange={(e) => setInputDaiAmount(e.target.value)}
@@ -126,7 +155,6 @@ export default function Web3ActionsModal({
           />
         </div>
 
-        {/* TODO: need approve button */}
         <ApproveButton
           tokenAddress={spendTokenAddress}
           tokenName={spendTokenSymbol}
@@ -148,8 +176,8 @@ export default function Web3ActionsModal({
           className={classNames(
             'py-4 mt-4 mb-2 text-lg font-bold rounded-2xl w-full',
             isDepositDisabled
-              ? 'text-brand-gray-2 dark:text-gray-300 bg-brand-gray dark:bg-gray-500 cursor-default border-brand-gray'
-              : 'border-brand-blue text-white bg-black font-medium hover:bg-black/[.8]'
+              ? 'text-gray-300 bg-gray-500 cursor-default'
+              : 'text-white bg-blue-600 hover:bg-blue-800'
           )}
           disabled={isDepositDisabled}
           onClick={onDepositClicked}

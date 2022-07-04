@@ -11,6 +11,7 @@ import Web3ReactManager from 'modules/wallet/components/Web3ReactManager'
 import ModalRoot from 'modules/modals/ModalRoot'
 import WrongNetworkOverlay from 'modules/web3/components/WrongNetworkOverlay'
 import { GlobalContextComponent } from 'stores/GlobalContext'
+import { QueryClient, QueryClientProvider } from 'react-query'
 
 function getLibrary(provider: any): Web3 {
   return new Web3(provider)
@@ -23,6 +24,8 @@ type NextPageWithLayout = NextPage & {
 type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout
 }
+
+const queryClient = new QueryClient()
 
 function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   const getLayout = Component.getLayout ?? ((page) => page)
@@ -39,18 +42,20 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
 
   return (
     <>
-      <GlobalContextComponent>
-        <Web3ReactProvider getLibrary={getLibrary}>
+      <QueryClientProvider client={queryClient}>
+        <GlobalContextComponent>
+          <Web3ReactProvider getLibrary={getLibrary}>
 
-          <Web3ReactManager>
-            {getLayout(<Component {...pageProps} />)}
-          </Web3ReactManager>
+            <Web3ReactManager>
+              {getLayout(<Component {...pageProps} />)}
+            </Web3ReactManager>
 
-          <WrongNetworkOverlay />
-          <ModalRoot />
+            <WrongNetworkOverlay />
+            <ModalRoot />
 
-        </Web3ReactProvider>
-      </GlobalContextComponent>
+          </Web3ReactProvider>
+        </GlobalContextComponent>
+      </QueryClientProvider>
     </>
   )
 }

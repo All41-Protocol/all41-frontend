@@ -7,6 +7,8 @@ export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'
 export const web3UintMax = new BN('2').pow(new BN('256')).sub(new BN('1'))
 export const zeroBN = new BN('0')
 
+export const bigNumberTenPow18 = new BigNumber('10').pow(new BigNumber('18'))
+
 export function floatToWeb3BN(
   float: string,
   decimals: number,

@@ -96,7 +96,7 @@ export default function ApproveButton({
         Allow All41 to {buttonText} your {tokenName}
       </span>
       <Tooltip className="inline-block ml-2">
-        <div className="w-32 md:w-64">
+        <div className="w-32 md:w-64 text-white">
           The All41 smart contract needs your approval to interact with
           your {tokenName} balance. After you grant permission, the {buttonName}{' '}
           button will be enabled. Select &apos;allow permanent&apos; in Settings (⚙️) to

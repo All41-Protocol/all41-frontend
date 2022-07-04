@@ -138,10 +138,10 @@ export default function Web3ActionsModal({
         </div>
 
         <div className="mb-4">
-          <div className="mb-2">Enter ETH address to send DAI too</div>
+          <div className="mb-2">Enter ETH address</div>
           <input
             onChange={(e) => setRecipientAddress(e.target.value)}
-            className="px-2 py-2 rounded text-black"
+            className="w-full px-2 py-2 rounded text-black"
             placeholder="Enter ETH address..."
           />
         </div>
@@ -150,7 +150,7 @@ export default function Web3ActionsModal({
           <div className="mb-2">Enter amount of DAI to send</div>
           <input
             onChange={(e) => setInputDaiAmount(e.target.value)}
-            className="px-2 py-2 rounded text-black"
+            className="w-full px-2 py-2 rounded text-black"
             placeholder="Enter amount of DAI..."
           />
         </div>

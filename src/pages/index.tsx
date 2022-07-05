@@ -3,7 +3,6 @@ import { subgraphGetAllPools } from 'actions/subgraph/subgraphGetAllPools'
 import A from 'components/A'
 import DefaultLayout from 'modules/layouts/DefaultLayout'
 import { convertAccountName } from 'modules/wallet/utils/WalletUtils'
-import { bigNumberTenPow18, web3BNToFloatString } from 'modules/web3/utils/Web3Utils'
 import type { NextPage } from 'next'
 import { ReactElement } from 'react'
 import { useInfiniteQuery } from 'react-query'
@@ -46,7 +45,7 @@ const Home: NextPage = () => {
     <div>
 
       <div className="max-w-[60rem] mx-auto mt-10 text-center text-white">
-        <div className="font-extrabold text-3xl">DEPOSIT. GAIN INTEREST. WITHDRAW. TOGETHER.</div>
+        <div className="font-extrabold text-3xl">DEPOSIT. EARN. WITHDRAW. TOGETHER.</div>
         <A
           href="/about"
           className="underline hover:text-blue-600 opacity-60 cursor-pointer"

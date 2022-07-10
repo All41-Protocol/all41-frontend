@@ -1,11 +1,13 @@
 import { ExternalLinkIcon } from '@heroicons/react/outline'
 import { subgraphGetAllDepositsAndWithdrawals } from 'actions/subgraph/subgraphGetAllDepositsAndWithdrawals'
 import { subgraphGetAllPools } from 'actions/subgraph/subgraphGetAllPools'
+import classNames from 'classnames'
 import A from 'components/A'
 import DefaultLayout from 'modules/layouts/DefaultLayout'
 import { convertAccountName } from 'modules/wallet/utils/WalletUtils'
+import { TX_TYPES } from 'modules/web3/components/TradeCompleteModal'
 import type { NextPage } from 'next'
-import { ReactElement } from 'react'
+import { ReactElement, useState } from 'react'
 import { useInfiniteQuery } from 'react-query'
 
 const infiniteQueryConfig = {
@@ -26,7 +28,14 @@ const infiniteQueryConfig = {
 
 const TOKENS_PER_PAGE = 10
 
+enum HOME_VIEW {
+  TX_DATA,
+  ALL_POOLS,
+}
+
 const Home: NextPage = () => {
+
+  const [homeView, setHomeView] = useState(HOME_VIEW.TX_DATA)
 
   const {
     data: infiniteAllPoolsData,
@@ -71,41 +80,83 @@ const Home: NextPage = () => {
           <ExternalLinkIcon className="w-5 inline ml-1 mb-1" />
         </A>
       </div>
+
+      <div className="flex justify-center items-center space-x-2 mt-6 text-white">
+        <button
+          onClick={() => setHomeView(HOME_VIEW.TX_DATA)}
+            className={classNames(
+              homeView === HOME_VIEW.TX_DATA && 'bg-black/[.1] text-blue-600 border-blue-600',
+              "text-2xl font-bold px-4 py-2 border rounded-lg"
+            )}
+          >
+            Transactions
+          </button>
+          <button
+            onClick={() => setHomeView(HOME_VIEW.ALL_POOLS)}
+            className={classNames(
+              homeView === HOME_VIEW.ALL_POOLS && 'bg-black/[.1] text-blue-600 border-blue-600',
+              "text-2xl font-bold px-4 py-2 border rounded-lg"
+            )}
+          >
+            Pools
+          </button>
+      </div>
+
+      {homeView === HOME_VIEW.TX_DATA && (
+        <div className="max-w-[40rem] mx-auto text-white text-left text-lg mt-6">
+          {allTx && allTx.length > 0 && allTx.map((tx: any, tInd) => {
+
+            return (
+              <div key={tInd}>
+                {tx.txType === TX_TYPES.DEPOSIT && (
+                  <div>{parseFloat(tx.daiAmount)} DAI deposit by <A href={`/pool/${tx.sender}`} className="font-bold hover:underline hover:text-blue-600">{convertAccountName(tx.sender)}</A> to <A href={`/pool/${tx.wallet}`} className="font-bold hover:underline hover:text-blue-600">{convertAccountName(tx.wallet)}</A> ({tx.timestamp.toLocaleString()})</div>
+                )}
+
+                {tx.txType === TX_TYPES.WITHDRAW && (
+                  <div>{parseFloat(tx.daiRedeemed)} DAI withdrawal by <A href={`/pool/${tx.wallet}`} className="font-bold hover:underline hover:text-blue-600">{convertAccountName(tx.wallet)}</A> ({tx.timestamp.toLocaleString()})</div>
+                )}
+              </div>
+            )
+          })}
+        </div>
+      )}
       
       {/* Start of table */}
-      {/* <div className="max-w-[60rem] mx-auto mt-10 bg-white text-black rounded-t-lg">
+      {homeView === HOME_VIEW.ALL_POOLS && (
+        <div className="max-w-[60rem] mx-auto mt-10 bg-white text-black rounded-t-lg">
 
-        <div className="flex items-center px-8 py-4 rounded-t-lg border-b">
+          <div className="flex items-center px-8 py-4 rounded-t-lg border-b">
 
-          <div className="w-[40%] font-bold">Wallet</div>
-          <div className="w-[20%] font-bold">Amount Stored</div>
-          <div className="w-[20%] font-bold">Total Redeemable</div>
-          <div className="w-[20%] font-bold">Interest Redeemable</div>
+            <div className="w-[40%] font-bold">Wallet</div>
+            <div className="w-[20%] font-bold">Amount Stored</div>
+            <div className="w-[20%] font-bold">Total Redeemable</div>
+            <div className="w-[20%] font-bold">Interest Redeemable</div>
+
+          </div>
+
+          {allPools && allPools.length > 0 && allPools.map((pool, pInd) => {
+            const displayUsernameOrWallet = convertAccountName(
+              pool?.wallet
+            )
+
+            return (
+              <div className="flex items-start px-8 py-4 text-xl" key={pInd}>
+
+                <div className="w-[40%]">
+                  <A href={`/pool/${pool?.wallet}`} className="font-bold hover:underline hover:text-blue-600">
+                    {displayUsernameOrWallet}
+                  </A>
+                </div>
+                <div className="w-[20%]">${parseFloat(pool?.daiInPool)}</div>
+                <div className="w-[20%]">${parseFloat(pool?.cDaiInPool)}</div>
+                <div className="w-[20%]">${parseFloat(pool?.interestRedeemable) || '0'}</div>
+
+              </div>
+            )
+          })}
 
         </div>
-
-        {allPools && allPools.length > 0 && allPools.map((pool, pInd) => {
-          const displayUsernameOrWallet = convertAccountName(
-            pool?.wallet
-          )
-
-          return (
-            <div className="flex items-start px-8 py-4 text-xl" key={pInd}>
-
-              <div className="w-[40%]">
-                <A href={`https://etherscan.io/address/${pool?.wallet}`} className="font-bold hover:underline hover:text-blue-600">
-                  {displayUsernameOrWallet}
-                </A>
-              </div>
-              <div className="w-[20%]">${parseFloat(pool?.daiInPool)}</div>
-              <div className="w-[20%]">${parseFloat(pool?.cDaiInPool)}</div>
-              <div className="w-[20%]">${parseFloat(pool?.interestRedeemable) || '0'}</div>
-
-            </div>
-          )
-        })}
-
-      </div> */}
+      )}
 
     </div>
   )

@@ -129,9 +129,9 @@ export default function Web3ActionsModal({
         <div className="mb-4 flex justify-between items-center">
           <div className="flex items-center space-x-2">
             <button
-            onClick={() => setTxType(TX_TYPES.DEPOSIT)}
+              onClick={() => setTxType(TX_TYPES.DEPOSIT)}
               className={classNames(
-                txType === TX_TYPES.DEPOSIT && 'bg-black/[.1] text-blue-600',
+                txType === TX_TYPES.DEPOSIT && 'bg-black/[.1] text-blue-600 border-blue-600',
                 "text-2xl font-bold px-4 py-2 border rounded-lg"
               )}
             >
@@ -140,7 +140,7 @@ export default function Web3ActionsModal({
             <button
               onClick={() => setTxType(TX_TYPES.WITHDRAW)}
               className={classNames(
-                txType === TX_TYPES.WITHDRAW && 'bg-black/[.1] text-blue-600',
+                txType === TX_TYPES.WITHDRAW && 'bg-black/[.1] text-blue-600 border-blue-600',
                 "text-2xl font-bold px-4 py-2 border rounded-lg"
               )}
             >

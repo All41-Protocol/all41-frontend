@@ -12,6 +12,7 @@ import ModalRoot from 'modules/modals/ModalRoot'
 import WrongNetworkOverlay from 'modules/web3/components/WrongNetworkOverlay'
 import { GlobalContextComponent } from 'stores/GlobalContext'
 import { QueryClient, QueryClientProvider } from 'react-query'
+import { setWeb3 } from 'stores/walletStore'
 
 function getLibrary(provider: any): Web3 {
   return new Web3(provider)
@@ -37,6 +38,7 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
     if (!active) {
       const web3 = new Web3(NETWORK.getRPCURL())
       initContractsFromWeb3(web3)
+      setWeb3(web3, undefined)
     }
   }, [active])
 

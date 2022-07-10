@@ -1,4 +1,5 @@
 import { ExternalLinkIcon } from '@heroicons/react/outline'
+import { subgraphGetAllDepositsAndWithdrawals } from 'actions/subgraph/subgraphGetAllDepositsAndWithdrawals'
 import { subgraphGetAllPools } from 'actions/subgraph/subgraphGetAllPools'
 import A from 'components/A'
 import DefaultLayout from 'modules/layouts/DefaultLayout'
@@ -41,11 +42,27 @@ const Home: NextPage = () => {
 
   const allPools = infiniteAllPoolsData?.pages[0] || []
 
+  const {
+    data: infiniteTxData,
+    isFetching: isTxDataLoading,
+    fetchNextPage: fetchMoreTx,
+    refetch: refetchTx,
+    hasNextPage: canFetchMoreTx,
+  } = useInfiniteQuery(
+    ['all-tx'],
+    ({ pageParam = 0 }) => subgraphGetAllDepositsAndWithdrawals({ skip: TOKENS_PER_PAGE, limit: pageParam }),
+    infiniteQueryConfig
+  )
+
+  const allTx = infiniteTxData?.pages[0] || []
+
+  console.log('allTx==', allTx)
+
   return (
     <div>
 
       <div className="max-w-[60rem] mx-auto mt-10 text-center text-white">
-        <div className="font-extrabold text-3xl">DEPOSIT. EARN. WITHDRAW. TOGETHER.</div>
+        <div className="font-extrabold text-3xl">Earn passive income. Together.</div>
         <A
           href="/about"
           className="underline hover:text-blue-600 opacity-60 cursor-pointer"
@@ -56,15 +73,14 @@ const Home: NextPage = () => {
       </div>
       
       {/* Start of table */}
-      <div className="max-w-[60rem] mx-auto mt-10 bg-white text-black rounded-t-lg">
+      {/* <div className="max-w-[60rem] mx-auto mt-10 bg-white text-black rounded-t-lg">
 
-        {/* Header with column titles */}
         <div className="flex items-center px-8 py-4 rounded-t-lg border-b">
 
-          <div className="w-[40%]">Wallet</div>
-          <div className="w-[20%]">Amount Stored</div>
-          <div className="w-[20%]">Total Redeemable</div>
-          <div className="w-[20%]">Interest Redeemable</div>
+          <div className="w-[40%] font-bold">Wallet</div>
+          <div className="w-[20%] font-bold">Amount Stored</div>
+          <div className="w-[20%] font-bold">Total Redeemable</div>
+          <div className="w-[20%] font-bold">Interest Redeemable</div>
 
         </div>
 
@@ -74,7 +90,7 @@ const Home: NextPage = () => {
           )
 
           return (
-            <div className="flex items-start px-8 py-4" key={pInd}>
+            <div className="flex items-start px-8 py-4 text-xl" key={pInd}>
 
               <div className="w-[40%]">
                 <A href={`https://etherscan.io/address/${pool?.wallet}`} className="font-bold hover:underline hover:text-blue-600">
@@ -89,7 +105,7 @@ const Home: NextPage = () => {
           )
         })}
 
-      </div>
+      </div> */}
 
     </div>
   )

@@ -18,6 +18,7 @@ import {
   connectorsById,
   ConnectorIds,
 } from 'modules/wallet/connectors/index'
+import { GlobalContext } from 'stores/GlobalContext'
 
 export default function WalletInterface({
   onWalletConnected,
@@ -30,6 +31,7 @@ export default function WalletInterface({
   onWalletClickedToConnect?: () => void
   walletButtonClassName?: string
 }) {
+  const { onWalletConnectedCallback, setOnWalletConnectedCallback } = useContext(GlobalContext)
   const [connectingWallet, setConnectingWallet] = useState(0)
 
   const { active, account, library, connector, activate, deactivate, chainId } =
@@ -46,10 +48,10 @@ export default function WalletInterface({
         onWalletConnected()
       }
 
-      // if (onWalletConnectedCallback) {
-      //   onWalletConnectedCallback()
-      //   setOnWalletConnectedCallback(undefined)
-      // }
+      if (onWalletConnectedCallback) {
+        onWalletConnectedCallback()
+        setOnWalletConnectedCallback(undefined as any)
+      }
     }
 
     if (activatingConnector && activatingConnector === connector) {

@@ -1,7 +1,13 @@
 import classNames from "classnames"
 import ModalService from "modules/modals/ModalService"
+import WalletModal from "modules/wallet/components/WalletModal"
 import WalletStatus from "modules/wallet/components/WalletStatus"
 import Web3ActionsModal from "modules/web3/components/Web3ActionsModal"
+import { useRouter } from "next/router"
+import { useContext } from "react"
+import { GlobalContext } from "stores/GlobalContext"
+import { useWalletStore } from "stores/walletStore"
+import A from "./A"
 
 type Props = {
   bgColor?: string
@@ -9,6 +15,30 @@ type Props = {
 }
 
 const MainHeader = ({ bgColor = 'bg-black/[.6]', textColor = 'text-white' }: Props) => {
+  const router = useRouter()
+  const { setOnWalletConnectedCallback } = useContext(GlobalContext)
+
+  const onDepositClicked = () => {
+    if (!useWalletStore.getState().address) {
+      setOnWalletConnectedCallback(() => () => {
+        ModalService.open(Web3ActionsModal)
+      })
+      ModalService.open(WalletModal)
+    } else {
+      ModalService.open(Web3ActionsModal)
+    }
+  }
+
+  const onMyFundsClicked = () => {
+    if (!useWalletStore.getState().address) {
+      setOnWalletConnectedCallback(() => () => {
+        router.push(`/pool/${useWalletStore.getState().address}`)
+      })
+      ModalService.open(WalletModal)
+    } else {
+      router.push(`/pool/${useWalletStore.getState().address}`)
+    }
+  }
 
   return (
     <>
@@ -22,18 +52,25 @@ const MainHeader = ({ bgColor = 'bg-black/[.6]', textColor = 'text-white' }: Pro
       >
         <div className="max-w-7xl mx-auto flex flex-wrap justify-between items-center space-x-2">
 
-          <span className="w-auto h-full text-2xl font-bold">
+          <A href="/" className="w-auto h-full text-2xl font-bold">
             All41
-          </span>
+          </A>
 
           <button
-            onClick={() => ModalService.open(Web3ActionsModal)}
+            onClick={onDepositClicked}
             className="px-4 py-2 rounded-lg bg-blue-600 font-bold"
           >
-            Deposit
+            Deposit/Withdraw
           </button>
 
           <WalletStatus />
+
+          <button
+            onClick={onMyFundsClicked}
+            className="px-4 py-2 rounded-lg bg-blue-600 font-bold"
+          >
+            My Funds
+          </button>
 
         </div>
       </div>

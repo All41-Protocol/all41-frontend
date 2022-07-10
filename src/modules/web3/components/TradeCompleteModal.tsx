@@ -5,10 +5,12 @@ import Modal from 'modules/modals/Modal'
 export enum TX_TYPES {
   NONE,
   DEPOSIT,
+  WITHDRAW,
 }
 
 const tweetableTypes = [
   TX_TYPES.DEPOSIT,
+  TX_TYPES.WITHDRAW,
 ]
 
 const getTweetTemplate = (transactionType: TX_TYPES, idtValue: string) => {

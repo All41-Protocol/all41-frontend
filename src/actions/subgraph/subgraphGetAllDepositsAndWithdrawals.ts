@@ -28,6 +28,7 @@ export async function subgraphGetAllDepositsAndWithdrawals({ skip, limit }: Prop
 
   const all41Txs = all41Deposits.concat(all41Withdrawals)
   all41Txs.sort((date1, date2) => date2.timestamp - date1.timestamp)
+  const paginatedTxs = all41Txs.slice(skip, skip + limit)
 
-  return all41Txs
+  return paginatedTxs
 }

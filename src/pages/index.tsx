@@ -45,7 +45,7 @@ const Home: NextPage = () => {
     hasNextPage: canFetchMoreAllPools,
   } = useInfiniteQuery(
     ['all-pools'],
-    ({ pageParam = 0 }) => subgraphGetAllPools({ skip: TOKENS_PER_PAGE, limit: pageParam }),
+    ({ pageParam = 0 }) => subgraphGetAllPools({ skip: pageParam, limit: TOKENS_PER_PAGE }),
     infiniteQueryConfig
   )
 
@@ -59,12 +59,13 @@ const Home: NextPage = () => {
     hasNextPage: canFetchMoreTx,
   } = useInfiniteQuery(
     ['all-tx'],
-    ({ pageParam = 0 }) => subgraphGetAllDepositsAndWithdrawals({ skip: TOKENS_PER_PAGE, limit: pageParam }),
+    ({ pageParam = 0 }) => subgraphGetAllDepositsAndWithdrawals({ skip: pageParam, limit: TOKENS_PER_PAGE }),
     infiniteQueryConfig
   )
 
   const allTx = infiniteTxData?.pages[0] || []
 
+  console.log('infiniteTxData==', infiniteTxData)
   console.log('allTx==', allTx)
 
   return (
@@ -104,7 +105,8 @@ const Home: NextPage = () => {
 
       {homeView === HOME_VIEW.TX_DATA && (
         <div className="max-w-[40rem] mx-auto text-white text-left text-lg mt-6">
-          {allTx && allTx.length > 0 && allTx.map((tx: any, tInd) => {
+          {infiniteTxData && infiniteTxData.pages.length > 0
+            && infiniteTxData.pages.map((page: any, pInd) => page.map((tx: any, tInd: any) => {
 
             return (
               <div key={tInd}>
@@ -117,43 +119,74 @@ const Home: NextPage = () => {
                 )}
               </div>
             )
-          })}
+          }))}
+
+          {isTxDataLoading && (
+            <div className="my-4 text-yellow-600 text-base">Transactions loading...</div>
+          )}
+
+          {canFetchMoreTx && (
+            <button
+              onClick={() => fetchMoreTx()}
+              className="px-3 py-2 bg-blue-600 rounded mt-4 text-base"
+            >
+              Load more
+            </button>
+          )}
+
         </div>
       )}
       
       {/* Start of table */}
       {homeView === HOME_VIEW.ALL_POOLS && (
-        <div className="max-w-[60rem] mx-auto mt-10 bg-white text-black rounded-t-lg">
+        <div className="max-w-[60rem] mx-auto">
+          <div className="max-w-[60rem] mx-auto mt-10 bg-white text-black rounded-t-lg">
 
-          <div className="flex items-center px-8 py-4 rounded-t-lg border-b">
+            <div className="flex items-center px-8 py-4 rounded-t-lg border-b">
 
-            <div className="w-[40%] font-bold">Wallet</div>
-            <div className="w-[20%] font-bold">Amount Stored</div>
-            <div className="w-[20%] font-bold">Total Redeemable</div>
-            <div className="w-[20%] font-bold">Interest Redeemable</div>
+              <div className="w-[40%] font-bold">Wallet</div>
+              <div className="w-[20%] font-bold">Amount Stored</div>
+              <div className="w-[20%] font-bold">Total Redeemable</div>
+              <div className="w-[20%] font-bold">Interest Redeemable</div>
+
+            </div>
+
+            {infiniteAllPoolsData && infiniteAllPoolsData.pages.length > 0
+              && infiniteAllPoolsData.pages.map((page: any, pageInd) => page.map((pool: any, pInd: any) => {
+              const displayUsernameOrWallet = convertAccountName(
+                pool?.wallet
+              )
+
+              return (
+                <div className="flex items-start px-8 py-4 text-xl" key={pInd}>
+
+                  <div className="w-[40%]">
+                    <A href={`/pool/${pool?.wallet}`} className="font-bold hover:underline hover:text-blue-600">
+                      {displayUsernameOrWallet}
+                    </A>
+                  </div>
+                  <div className="w-[20%]">${parseFloat(pool?.daiInPool)}</div>
+                  <div className="w-[20%]">${parseFloat(pool?.cDaiInPool)}</div>
+                  <div className="w-[20%]">${parseFloat(pool?.interestRedeemable) || '0'}</div>
+
+                </div>
+              )
+            }))}
 
           </div>
 
-          {allPools && allPools.length > 0 && allPools.map((pool, pInd) => {
-            const displayUsernameOrWallet = convertAccountName(
-              pool?.wallet
-            )
+          {isAllPoolsDataLoading && (
+            <div className="my-4 text-yellow-600">Wallet Pools loading...</div>
+          )}
 
-            return (
-              <div className="flex items-start px-8 py-4 text-xl" key={pInd}>
-
-                <div className="w-[40%]">
-                  <A href={`/pool/${pool?.wallet}`} className="font-bold hover:underline hover:text-blue-600">
-                    {displayUsernameOrWallet}
-                  </A>
-                </div>
-                <div className="w-[20%]">${parseFloat(pool?.daiInPool)}</div>
-                <div className="w-[20%]">${parseFloat(pool?.cDaiInPool)}</div>
-                <div className="w-[20%]">${parseFloat(pool?.interestRedeemable) || '0'}</div>
-
-              </div>
-            )
-          })}
+          {canFetchMoreAllPools && (
+            <button
+              onClick={() => fetchMoreAllPools()}
+              className="px-3 py-2 bg-blue-600 rounded mt-4 text-white"
+            >
+              Load more
+            </button>
+          )}
 
         </div>
       )}

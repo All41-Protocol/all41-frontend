@@ -23,5 +23,7 @@ export async function subgraphGetAllPools({ skip, limit }: Props): Promise<Walle
     return []
   }
 
-  return result?.walletPools?.map((pool: any) => mapSubgraphToWalletPool({ subgraphWalletPool: pool }))
+  return result?.walletPools
+    ?.map((pool: any) => mapSubgraphToWalletPool({ subgraphWalletPool: pool }))
+    .slice(skip, skip + limit)
 }

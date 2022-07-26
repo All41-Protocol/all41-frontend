@@ -1,10 +1,12 @@
-import { ChevronDownIcon, SearchIcon } from "@heroicons/react/solid"
+import { ChevronDownIcon, MenuIcon, SearchIcon, XIcon } from "@heroicons/react/solid"
 import classNames from "classnames"
 import ModalService from "modules/modals/ModalService"
+import MobileNavItems from "modules/uncategorized/components/MobileNavItems"
 import useOnClickOutside from "modules/uncategorized/hooks/useOnClickOutside"
 import WalletModal from "modules/wallet/components/WalletModal"
 import WalletStatus from "modules/wallet/components/WalletStatus"
 import Web3ActionsModal from "modules/web3/components/Web3ActionsModal"
+import Image from "next/image"
 import { useRouter } from "next/router"
 import { useContext, useRef, useState } from "react"
 import { GlobalContext } from "stores/GlobalContext"
@@ -19,6 +21,8 @@ type Props = {
 const MainHeader = ({ bgColor = 'bg-black/[.6]', textColor = 'text-white' }: Props) => {
   const router = useRouter()
   const { setOnWalletConnectedCallback } = useContext(GlobalContext)
+
+  const [isMobileNavOpen, setMobileNavOpen] = useState(false)
 
   const [inputTextSearch, setInputTextSearch] = useState('')
 
@@ -154,10 +158,44 @@ const MainHeader = ({ bgColor = 'bg-black/[.6]', textColor = 'text-white' }: Pro
         className={classNames(
           bgColor,
           textColor,
-          'md:hidden absolute z-[200] w-full h-10 px-3 py-4 overflow-none flex justify-between items-center'
+          'md:hidden absolute z-[200] w-full h-16 py-4 overflow-none'
         )}
       >
+        <div className="flex justify-between items-center md:hidden px-3">
+          <button
+            onClick={() => setMobileNavOpen(!isMobileNavOpen)}
+            type="button"
+            className="inline-flex pr-2 mr-1 bg-transparent focus:outline-none "
+            aria-controls="mobile-menu"
+            aria-expanded="false"
+          >
+            <span className="sr-only">Open main menu</span>
+            {!isMobileNavOpen ? (
+              <MenuIcon className="w-6 h-6" />
+            ) : (
+              <XIcon className="w-6 h-6" />
+            )}
+          </button>
 
+          <button
+            onClick={onDepositClicked}
+            className="px-4 py-2 rounded-lg bg-blue-600 font-bold"
+          >
+            Deposit/Withdraw
+          </button>
+
+          <A href="/" className="contents w-auto h-full text-2xl font-bold">
+            All41
+          </A>
+
+          {/* <div className="flex">
+            <WalletStatusWithConnectButton />
+          </div> */}
+        </div>
+
+        <MobileNavItems
+          isMobileNavOpen={isMobileNavOpen}
+        />
       </div>
     </>
   )

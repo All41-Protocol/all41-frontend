@@ -63,15 +63,10 @@ const Home: NextPage = () => {
     infiniteQueryConfig
   )
 
-  const allTx = infiniteTxData?.pages[0] || []
-
-  console.log('infiniteTxData==', infiniteTxData)
-  console.log('allTx==', allTx)
-
   return (
     <div>
 
-      <div className="max-w-[60rem] mx-auto mt-10 text-center text-white">
+      <div className="md:max-w-[60rem] mx-auto mt-10 text-center text-white">
         <div className="font-extrabold text-3xl">Earn passive income. Together.</div>
         <A
           href="/about"
@@ -85,56 +80,92 @@ const Home: NextPage = () => {
       <div className="flex justify-center items-center space-x-2 mt-6 text-white">
         <button
           onClick={() => setHomeView(HOME_VIEW.TX_DATA)}
-            className={classNames(
-              homeView === HOME_VIEW.TX_DATA && 'bg-black/[.1] text-blue-600 border-blue-600',
-              "text-2xl font-bold px-4 py-2 border rounded-lg"
-            )}
-          >
-            Transactions
-          </button>
-          <button
-            onClick={() => setHomeView(HOME_VIEW.ALL_POOLS)}
-            className={classNames(
-              homeView === HOME_VIEW.ALL_POOLS && 'bg-black/[.1] text-blue-600 border-blue-600',
-              "text-2xl font-bold px-4 py-2 border rounded-lg"
-            )}
-          >
-            Pools
-          </button>
+          className={classNames(
+            homeView === HOME_VIEW.TX_DATA && 'bg-black/[.1] text-blue-600 border-blue-600',
+            "text-2xl font-bold px-4 py-2 border rounded-lg"
+          )}
+        >
+          Transactions
+        </button>
+        <button
+          onClick={() => setHomeView(HOME_VIEW.ALL_POOLS)}
+          className={classNames(
+            homeView === HOME_VIEW.ALL_POOLS && 'bg-black/[.1] text-blue-600 border-blue-600',
+            "text-2xl font-bold px-4 py-2 border rounded-lg"
+          )}
+        >
+          Pools
+        </button>
       </div>
 
       {homeView === HOME_VIEW.TX_DATA && (
-        <div className="max-w-[40rem] mx-auto text-white text-left text-lg mt-6">
-          {infiniteTxData && infiniteTxData.pages.length > 0
-            && infiniteTxData.pages.map((page: any, pInd) => page.map((tx: any, tInd: any) => {
+        <>
+          {/* Desktop and tablet */}
+          <div className="hidden md:block max-w-[40rem] mx-auto text-white text-left text-lg mt-6">
+            {infiniteTxData && infiniteTxData.pages.length > 0
+              && infiniteTxData.pages.map((page: any, pInd) => page.map((tx: any, tInd: any) => {
 
-            return (
-              <div key={tInd}>
-                {tx.txType === TX_TYPES.DEPOSIT && (
-                  <div>{parseFloat(tx.daiAmount)} DAI deposit by <A href={`/pool/${tx.sender}`} className="font-bold hover:underline hover:text-blue-600">{convertAccountName(tx.sender)}</A> to <A href={`/pool/${tx.wallet}`} className="font-bold hover:underline hover:text-blue-600">{convertAccountName(tx.wallet)}</A> ({tx.timestamp.toLocaleString()})</div>
-                )}
+              return (
+                <div className="border-b mb-4 pb-4" key={tInd}>
+                  {tx.txType === TX_TYPES.DEPOSIT && (
+                    <div>{parseFloat(tx.daiAmount)} DAI deposit by <A href={`/pool/${tx.sender}`} className="font-bold hover:underline hover:text-blue-600">{convertAccountName(tx.sender)}</A> to <A href={`/pool/${tx.wallet}`} className="font-bold hover:underline hover:text-blue-600">{convertAccountName(tx.wallet)}</A> ({tx.timestamp.toLocaleString()})</div>
+                  )}
 
-                {tx.txType === TX_TYPES.WITHDRAW && (
-                  <div>{parseFloat(tx.daiRedeemed)} DAI withdrawal by <A href={`/pool/${tx.wallet}`} className="font-bold hover:underline hover:text-blue-600">{convertAccountName(tx.wallet)}</A> ({tx.timestamp.toLocaleString()})</div>
-                )}
-              </div>
-            )
-          }))}
+                  {tx.txType === TX_TYPES.WITHDRAW && (
+                    <div>{parseFloat(tx.daiRedeemed)} DAI withdrawal by <A href={`/pool/${tx.wallet}`} className="font-bold hover:underline hover:text-blue-600">{convertAccountName(tx.wallet)}</A> ({tx.timestamp.toLocaleString()})</div>
+                  )}
+                </div>
+              )
+            }))}
 
-          {isTxDataLoading && (
-            <div className="my-4 text-yellow-600 text-base">Transactions loading...</div>
-          )}
+            {isTxDataLoading && (
+              <div className="my-4 text-yellow-600 text-base">Transactions loading...</div>
+            )}
 
-          {canFetchMoreTx && (
-            <button
-              onClick={() => fetchMoreTx()}
-              className="px-3 py-2 bg-blue-600 rounded mt-4 text-base"
-            >
-              Load more
-            </button>
-          )}
+            {canFetchMoreTx && (
+              <button
+                onClick={() => fetchMoreTx()}
+                className="px-3 py-2 bg-blue-600 rounded mt-4 text-base"
+              >
+                Load more
+              </button>
+            )}
 
-        </div>
+          </div>
+
+          {/* Mobile */}
+          <div className="md:hidden w-full px-4 text-white text-left text-base mt-6">
+            {infiniteTxData && infiniteTxData.pages.length > 0
+              && infiniteTxData.pages.map((page: any, pInd) => page.map((tx: any, tInd: any) => {
+
+              return (
+                <div className="border-b mb-4 pb-4" key={tInd}>
+                  {tx.txType === TX_TYPES.DEPOSIT && (
+                    <div>{parseFloat(tx.daiAmount)} DAI deposit by <A href={`/pool/${tx.sender}`} className="font-bold hover:underline hover:text-blue-600">{convertAccountName(tx.sender)}</A> to <A href={`/pool/${tx.wallet}`} className="font-bold hover:underline hover:text-blue-600">{convertAccountName(tx.wallet)}</A> ({tx.timestamp.toLocaleString()})</div>
+                  )}
+
+                  {tx.txType === TX_TYPES.WITHDRAW && (
+                    <div>{parseFloat(tx.daiRedeemed)} DAI withdrawal by <A href={`/pool/${tx.wallet}`} className="font-bold hover:underline hover:text-blue-600">{convertAccountName(tx.wallet)}</A> ({tx.timestamp.toLocaleString()})</div>
+                  )}
+                </div>
+              )
+            }))}
+
+            {isTxDataLoading && (
+              <div className="my-4 text-yellow-600 text-base">Transactions loading...</div>
+            )}
+
+            {canFetchMoreTx && (
+              <button
+                onClick={() => fetchMoreTx()}
+                className="px-3 py-2 bg-blue-600 rounded mt-4 text-base"
+              >
+                Load more
+              </button>
+            )}
+
+          </div>
+        </>
       )}
       
       {/* Start of table */}

@@ -1,10 +1,11 @@
 import React, { useEffect, useContext } from 'react'
 import { useWalletStore } from 'stores/walletStore'
-import { INetworkSpecifics } from 'stores/networks'
+import { INetworkSpecifics, NETWORK } from 'stores/networks'
 
 import dynamic from 'next/dynamic'
 import Image from 'next/image'
 import { GlobalContext } from 'stores/GlobalContext'
+import { ExclamationCircleIcon } from '@heroicons/react/outline'
 
 const NoSSRWalletInterface = dynamic(() => import('modules/wallet/components/WalletInterface'), {
   ssr: false,
@@ -61,19 +62,12 @@ export default function WrongNetworkOverlay() {
   }
 
   return (
-    <div className="absolute top-0 left-0 z-[500] w-screen h-screen bg-gray-200 dark:bg-gray-800">
+    <div className="absolute top-0 left-0 z-[500] w-screen h-screen bg-gray-800 text-white">
       <div className="flex items-center justify-center w-full h-full overflow-auto">
         <div className="flex flex-col items-center">
-          <div className="relative w-full h-32 md:h-64">
-            <Image
-              src="/logo.png"
-              alt="Workflow logo"
-              layout="fill"
-              objectFit="contain"
-            />
-          </div>
+          <ExclamationCircleIcon className="w-32 text-red-600" />
 
-          <h1 className="mt-5 text-2xl md:text-3xl">
+          <h1 className="mt-5 text-3xl">
             Change network selection
           </h1>
           <div className="mt-10 text-sm">
@@ -81,7 +75,7 @@ export default function WrongNetworkOverlay() {
           </div>
           <div className="text-sm">
             Please connect to{' '}
-            <strong>{requiredNetwork.getHumanReadableNetworkName()}</strong> and
+            <strong>{NETWORK.getHumanReadableNetworkName()}</strong> and
             try again.
           </div>
           {addNetworkParams !== undefined && (
@@ -92,6 +86,7 @@ export default function WrongNetworkOverlay() {
               Add or Switch Network
             </button>
           )}
+
           <div className="mt-5 bg-white border rounded dark:bg-gray-700 dark:border-gray-500 border-brand-gray-2">
             <NoSSRWalletInterface />
           </div>

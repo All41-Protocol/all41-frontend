@@ -66,7 +66,7 @@ export default function WalletInterface({
         }
         // After connecting to a wallet fails, it disconnects any previous wallet, so we try to reconnect
         const walletStr = localStorage.getItem('WALLET_TYPE')
-        const previousConnector = connectorsById[parseInt(walletStr)]
+        const previousConnector = connectorsById[parseInt(walletStr as any) as ConnectorIds]
         activate(previousConnector)
 
         if (onWalletConnectFailed) {
@@ -80,7 +80,7 @@ export default function WalletInterface({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activatingConnector, connector])
 
-  async function onWalletClicked(wallet: any) {
+  async function onWalletClicked(wallet: ConnectorIds) {
     if (onWalletClickedToConnect) {
       onWalletClickedToConnect()
     }
@@ -125,7 +125,7 @@ export default function WalletInterface({
       <div className="relative flex pl-4 pr-4 mt-4">
         <button
           disabled={connectingWallet !== 0 || isDisabled}
-          onClick={() => onWalletClicked(wallet)}
+          onClick={() => onWalletClicked(wallet as any)}
           className={classNames(
             connectingWallet === 0 && !isDisabled
               ? 'hover:border-transparent hover:bg-brand-blue hover:text-brand-gray cursor-pointer'

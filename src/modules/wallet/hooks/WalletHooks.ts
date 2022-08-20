@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import { setWeb3 } from 'stores/walletStore'
 
-import { injected, connectorsById } from '../connectors/index'
+import { injected, connectorsById, ConnectorIds } from '../connectors/index'
 import usePrevious from '../utils/usePrevious'
 
 export function useEagerConnect() {
@@ -17,7 +17,7 @@ export function useEagerConnect() {
       const walletStr = localStorage.getItem('WALLET_TYPE')
       // If connected before, connect back
       if (walletStr) {
-        const previousConnector = connectorsById[parseInt(walletStr)]
+        const previousConnector = connectorsById[parseInt(walletStr as any) as ConnectorIds]
         // If connector needs to check auth first, then check
         if (
           (previousConnector.isAuthorized &&

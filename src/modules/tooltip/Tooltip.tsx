@@ -16,7 +16,7 @@ export default function Tooltip({
   placement,
   iconComponentClassNames,
   tooltipContentclassName,
-  customBottomPad,
+  customBottomPad = 0,
 }: {
   children?: ReactNode
   className?: string
@@ -81,7 +81,7 @@ export default function Tooltip({
     const hideTimeoutId = setTimeout(() => {
       setShowToolTip(false)
     }, HIDING_DELAY_TIME)
-    setHideTimerId(hideTimeoutId)
+    setHideTimerId(hideTimeoutId as any)
   }, [])
 
   return (

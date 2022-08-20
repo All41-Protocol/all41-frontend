@@ -8,7 +8,7 @@ export default class TxManager {
   hash: string
   setHash: React.Dispatch<React.SetStateAction<string>>
 
-  constructor([name, setName], [isPending, setIsPending], [hash, setHash]) {
+  constructor([name, setName]: any, [isPending, setIsPending]: any, [hash, setHash]: any) {
     this.name = name
     this.setName = setName
     this.isPending = isPending

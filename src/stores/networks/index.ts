@@ -1,4 +1,4 @@
-// import MainnetNetworkSpecifics from './mainnet'
+import MainnetNetworkSpecifics from './mainnet'
 import GoerliNetworkSpecifics from './goerli'
 import RinkebyNetworkSpecifics from './rinkeby'
 
@@ -41,7 +41,7 @@ export type INetworkSpecifics = {
 }
 
 const specifics: INetworkSpecifics[] = [
-  // new MainnetNetworkSpecifics(),
+  new MainnetNetworkSpecifics(),
   new RinkebyNetworkSpecifics(),
   new GoerliNetworkSpecifics(),
 ]

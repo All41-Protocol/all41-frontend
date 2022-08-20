@@ -196,9 +196,9 @@ const Home: NextPage = () => {
                       {displayUsernameOrWallet}
                     </A>
                   </div>
-                  <div className="w-[20%]">${parseFloat(pool?.daiInPool)}</div>
-                  <div className="w-[20%]">${parseFloat(pool?.cDaiInPool)}</div>
-                  <div className="w-[20%]">${parseFloat(pool?.interestRedeemable) || '0'}</div>
+                  <div className="w-[20%]">${parseFloat(Number(pool?.daiInPool).toFixed(8))}</div>
+                  <div className="w-[20%]">${parseFloat(Number(pool?.totalRedeemable).toFixed(8))}</div>
+                  <div className="w-[20%]">${parseFloat(Number(pool?.cDaiInPool).toFixed(8)) || '0'}</div>
 
                 </div>
               )

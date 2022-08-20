@@ -2,6 +2,7 @@ import { Transition } from '@headlessui/react'
 import classNames from 'classnames'
 import { ReactNode } from 'react'
 import { XIcon } from '@heroicons/react/outline'
+import { XCircleIcon } from '@heroicons/react/solid'
 
 export default function Modal({
   className = '',
@@ -75,7 +76,7 @@ export default function Modal({
                     aria-label="Close"
                     onClick={close}
                   >
-                    <Close className="w-full h-full" />
+                    <XCircleIcon className="w-full h-full" />
                   </button>
                 </div>
               )}

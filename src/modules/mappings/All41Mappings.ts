@@ -10,8 +10,8 @@ export const mapSubgraphToWalletPool = ({ subgraphWalletPool }: any): WalletPool
   const cDaiInPool = web3BNToFloatString(cDaiInPoolBN, bigNumberTenPow18, 18)
   const daiInPoolBN = new BN(subgraphWalletPool?.daiInPool)
   const daiInPool = web3BNToFloatString(daiInPoolBN, bigNumberTenPow18, 18)
-  const interestRedeemableBN = daiInPoolBN.sub(cDaiInPoolBN) || 0
-  const interestRedeemable = web3BNToFloatString(interestRedeemableBN, bigNumberTenPow18, 18)
+  const totalRedeemableBN = daiInPoolBN.add(cDaiInPoolBN) || 0
+  const totalRedeemable = web3BNToFloatString(totalRedeemableBN, bigNumberTenPow18, 18)
 
   return {
     id: subgraphWalletPool?.id,
@@ -20,8 +20,8 @@ export const mapSubgraphToWalletPool = ({ subgraphWalletPool }: any): WalletPool
     cDaiInPool,
     daiInPoolBN,
     daiInPool,
-    interestRedeemableBN,
-    interestRedeemable,
+    totalRedeemableBN,
+    totalRedeemable,
   }
 }
 

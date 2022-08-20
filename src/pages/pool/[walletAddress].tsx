@@ -36,9 +36,9 @@ const WalletPool: NextPage = () => {
 
               <div className="flex items-start px-8 py-4 text-xl">
 
-                <div className="w-[33.333%]">${parseFloat(poolData?.daiInPool)}</div>
-                <div className="w-[33.333%]">${parseFloat(poolData?.cDaiInPool)}</div>
-                <div className="w-[33.333%]">${parseFloat(poolData?.interestRedeemable) || '0'}</div>
+              <div className="w-[33.333%]">${parseFloat(Number(poolData?.daiInPool).toFixed(8))}</div>
+              <div className="w-[33.333%]">${parseFloat(Number(poolData?.totalRedeemable).toFixed(8))}</div>
+              <div className="w-[33.333%]">${parseFloat(Number(poolData?.cDaiInPool).toFixed(8)) || '0'}</div>
 
               </div>
 
@@ -68,9 +68,9 @@ const WalletPool: NextPage = () => {
 
           <div className="flex items-start px-8 py-4 text-xl">
 
-            <div className="w-[33.333%]">${parseFloat(poolData?.daiInPool)}</div>
-            <div className="w-[33.333%]">${parseFloat(poolData?.cDaiInPool)}</div>
-            <div className="w-[33.333%]">${parseFloat(poolData?.interestRedeemable) || '0'}</div>
+            <div className="w-[33.333%]">${parseFloat(Number(poolData?.daiInPool).toFixed(8))}</div>
+            <div className="w-[33.333%]">${parseFloat(Number(poolData?.totalRedeemable).toFixed(8))}</div>
+            <div className="w-[33.333%]">${parseFloat(Number(poolData?.cDaiInPool).toFixed(8)) || '0'}</div>
 
           </div>
 

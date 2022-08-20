@@ -5,11 +5,11 @@ export type WalletPool = {
   id: string
   wallet: string
   cDaiInPoolBN: BN
-  cDaiInPool: string
+  cDaiInPool: string  // This IS amount of interest redeemable
   daiInPoolBN: BN
   daiInPool: string
-  interestRedeemableBN: BN
-  interestRedeemable: string
+  totalRedeemableBN: BN
+  totalRedeemable: string
 }
 
 export type All41Deposit = {

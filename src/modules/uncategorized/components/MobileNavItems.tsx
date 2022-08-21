@@ -89,6 +89,12 @@ const MobileNavItems = ({ isMobileNavOpen }: Props) => {
           </div>
         </div>
 
+        <div className="px-3 py-3 border-b">
+          <A href="https://github.com/All41-Protocol" className="contents w-auto h-full">
+            Github
+          </A>
+        </div>
+
         <div
           onClick={onMyFundsClicked}
           className="px-3 font-bold"

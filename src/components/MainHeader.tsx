@@ -118,6 +118,10 @@ const MainHeader = ({ bgColor = 'bg-black/[.6]', textColor = 'text-white' }: Pro
             </div>
           </div>
 
+          <A href="https://github.com/All41-Protocol" className="contents w-auto h-full">
+            Github
+          </A>
+
           <button
             onClick={onDepositClicked}
             className="px-4 py-2 rounded-lg bg-blue-600 font-bold"
